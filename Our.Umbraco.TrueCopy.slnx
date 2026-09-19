@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="src/Cms/Cms.csproj" />
+  <Project Path="src/TrueCopy/TrueCopy.csproj" />
+  <Project Path="src/TrueCopy.Tests/TrueCopy.Tests.csproj" />
+</Solution>

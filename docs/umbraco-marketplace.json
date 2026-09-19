@@ -1,0 +1,35 @@
+{
+  "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
+  "PackageId": "Our.Umbraco.TrueCopy",
+  "Title": "TrueCopy for Umbraco",
+  "Description": "Umbraco's built-in Copy leaves every internal link in the copies pointing at the originals. TrueCopy performs the same copy, then repoints every link whose target was part of the copy — and lists the ones that still point outside it, which is the thing an editor cannot see for themselves. Custom property editors are supported by implementing one interface.",
+  "Category": "Backoffice Extensions",
+  "AlternateCategory": "Developer Tools",
+  "PackageType": "Package",
+  "Tags": [
+    "copy",
+    "duplicate",
+    "links",
+    "content-tree",
+    "backoffice"
+  ],
+  "DocumentationUrl": "https://github.com/SteveVaneeckhout/Our.Umbraco.TrueCopy/tree/main/docs",
+  "IssueTrackerUrl": "https://github.com/SteveVaneeckhout/Our.Umbraco.TrueCopy/issues",
+  "SourceCodeUrl": "https://github.com/SteveVaneeckhout/Our.Umbraco.TrueCopy",
+  "LicenseTypes": [
+    "Free"
+  ],
+  "Screenshots": [
+    {
+      "ImageUrl": "https://raw.githubusercontent.com/SteveVaneeckhout/Our.Umbraco.TrueCopy/main/docs/img/tree-action.png"
+    }
+  ],
+  "AuthorDetails": {
+    "Name": "Steve Vaneeckhout",
+    "Url": "https://github.com/SteveVaneeckhout"
+  },
+  "PackagesByAuthor": [
+    "Our.Umbraco.ContentDashboard",
+    "Our.Umbraco.ErrorDashboard"
+  ]
+}

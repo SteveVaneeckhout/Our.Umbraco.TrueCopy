@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    The English source for every string this package sends back to a browser. A translation is a
+    sibling file with a culture suffix - TrueCopyResources.nl.resx - which .NET builds into a
+    satellite assembly and picks up through the usual resource fallback, so nl-NL falls back to nl
+    and nl falls back to this file.
+
+    These live server-side rather than in the client dictionary because they reach the editor as
+    ProblemDetails, which core renders generically - our TypeScript never sees them as data.
+  -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ForbiddenTitle" xml:space="preserve">
+    <value>Not allowed</value>
+    <comment>ProblemDetails title for both permission failures.</comment>
+  </data>
+  <data name="ForbiddenDuplicate" xml:space="preserve">
+    <value>You do not have permission to duplicate that document.</value>
+  </data>
+  <data name="ForbiddenCreate" xml:space="preserve">
+    <value>You do not have permission to create content in that location.</value>
+  </data>
+  <data name="ForbiddenNoUser" xml:space="preserve">
+    <value>The request is not associated with a back office user.</value>
+  </data>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>Not found</value>
+  </data>
+  <data name="NotFoundDetail" xml:space="preserve">
+    <value>The document being copied, or the place to copy it to, no longer exists.</value>
+  </data>
+  <data name="NotAllowedTitle" xml:space="preserve">
+    <value>Copy not allowed</value>
+  </data>
+  <data name="NotAllowedDetail" xml:space="preserve">
+    <value>That document type is not allowed under the chosen parent.</value>
+  </data>
+  <data name="FailedTitle" xml:space="preserve">
+    <value>Copy failed</value>
+  </data>
+  <data name="FailedDetail" xml:space="preserve">
+    <value>The copy could not be completed ({0}).</value>
+    <comment>{0} is the raw ContentEditingOperationStatus name. Deliberately left untranslated - it is a diagnostic tail for a support report, not prose.</comment>
+  </data>
+</root>

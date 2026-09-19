@@ -1,0 +1,14 @@
+{
+  "id": "TrueCopy",
+  "name": "TrueCopy",
+  "version": "1.1.1",
+  "allowTelemetry": true,
+  "extensions": [
+    {
+      "name": "True Copy Bundle",
+      "alias": "TrueCopy.Bundle",
+      "type": "bundle",
+      "js": "/App_Plugins/TrueCopy/true-copy.js"
+    }
+  ]
+}

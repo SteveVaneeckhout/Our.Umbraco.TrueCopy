@@ -1,0 +1,8 @@
+# GitHub Pages serves this folder (Settings -> Pages -> main /docs). It also serves
+# umbraco-marketplace.json, which the Umbraco Marketplace reads from the package project URL.
+title: TrueCopy for Umbraco
+description: Copy a section of your site and have the links come with it.
+theme: jekyll-theme-cayman
+
+exclude:
+  - upgrading.md
