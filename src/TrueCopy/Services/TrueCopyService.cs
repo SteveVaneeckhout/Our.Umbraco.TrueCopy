@@ -66,7 +66,7 @@ public sealed class TrueCopyService : ITrueCopyService
         IContent rootCopy = copyAttempt.Result;
         TrueCopyOperation operation = scope.Operation;
 
-        RewriteResult rewrite = RewriteCopies(operation, userKey);
+        RewriteResult rewrite = await RewriteCopiesAsync(operation, userKey);
 
         return Attempt.SucceedWithStatus<TrueCopyResultModel?, ContentEditingOperationStatus>(
             ContentEditingOperationStatus.Success,
@@ -83,7 +83,7 @@ public sealed class TrueCopyService : ITrueCopyService
             });
     }
 
-    private RewriteResult RewriteCopies(TrueCopyOperation operation, Guid userKey)
+    private async Task<RewriteResult> RewriteCopiesAsync(TrueCopyOperation operation, Guid userKey)
     {
         var context = new RewriteContext(
             operation.KeyMap,
@@ -111,7 +111,8 @@ public sealed class TrueCopyService : ITrueCopyService
         {
             // Saving is fine here, unlike ContentDashboard's ownership transfer: these documents were
             // created seconds ago, so stamping UpdateDate and WriterId destroys no signal.
-            _contentService.Save(changed, _userIdKeyResolver.GetAsync(userKey).GetAwaiter().GetResult());
+            int writerId = await _userIdKeyResolver.GetAsync(userKey);
+            _contentService.Save(changed, writerId);
         }
 
         return new RewriteResult(changed.Count, context.RewrittenLinkCount, context.ExternalReferences);
