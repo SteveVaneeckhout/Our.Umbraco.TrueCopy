@@ -18,7 +18,12 @@ Custom property editors are supported by implementing one interface.
 dotnet add package Our.Umbraco.TrueCopy
 ```
 
-Requires Umbraco 18 and .NET 10.
+Requires Umbraco 18 and .NET 10. On the **Umbraco 17 LTS**, install the 17.x line instead - the
+package major follows the Umbraco major:
+
+```bash
+dotnet add package Our.Umbraco.TrueCopy --version "17.*"
+```
 
 ![TrueCopy for Umbraco](img/tree-action.png)
 
