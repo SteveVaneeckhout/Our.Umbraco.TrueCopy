@@ -13,7 +13,7 @@
     <Product>TrueCopy for Umbraco</Product>
     <Title>TrueCopy for Umbraco</Title>
     <Description>Umbraco's built-in Copy duplicates a subtree but copies property values verbatim, so every Content Picker, Multinode Treepicker, Multi URL Picker and rich-text internal link in the copies still points at the original pages. TrueCopy adds a True Copy action that performs the copy and then repoints every internal link whose target was itself part of the copy. Links pointing outside the copy are left alone but are counted and listed afterwards, because that is the one thing an editor cannot see for themselves. Custom property editors can be supported by implementing ILinkRewriter.</Description>
-    <PackageTags>umbraco umbraco-marketplace umbraco-package umbraco-18 backoffice copy duplicate links content-tree</PackageTags>
+    <PackageTags>umbraco umbraco-marketplace umbraco-package umbraco-17 backoffice copy duplicate links content-tree</PackageTags>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -23,25 +23,18 @@
 
   <!-- Per-project - with versions -->
   <ItemGroup>
-    <PackageReference Include="Umbraco.Cms.Api.Common" Version="[18.2.0,19.0.0)" />
-    <PackageReference Include="Umbraco.Cms.Api.Management" Version="[18.2.0,19.0.0)" />
-    <PackageReference Include="Umbraco.Cms.Web.Common" Version="[18.2.0,19.0.0)" />
-    <PackageReference Include="Umbraco.Cms.Web.Website" Version="[18.2.0,19.0.0)" />
+    <PackageReference Include="Umbraco.Cms.Api.Common" Version="[17.7.0,18.0.0)" />
+    <PackageReference Include="Umbraco.Cms.Api.Management" Version="[17.7.0,18.0.0)" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="[17.7.0,18.0.0)" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="[17.7.0,18.0.0)" />
 
     <!--
-      Microsoft.AspNetCore.OpenApi is available transitively from the Umbraco packages above, but we
-      take a direct dependency here because extension code directly uses types from this package
-      (IOpenApiDocumentTransformer, IOpenApiOperationTransformer, etc.) and from Microsoft.OpenApi
-      (OpenApiInfo). Without a direct reference, this project's Microsoft.AspNetCore.OpenApi version
-      is determined solely by NuGet's transitive resolution, which can resolve to a different version
-      than the host site project (e.g. a newer patch). When that happens, the different
-      Microsoft.OpenApi versions can conflict at runtime, causing custom OpenAPI documents registered
-      by the extension to fail to appear.
-      Most other transitive dependencies don't have this problem because extension code doesn't use
-      their types directly - only Microsoft.AspNetCore.OpenApi / Microsoft.OpenApi types are
-      referenced in the composer.
+      Umbraco 17 still generates OpenAPI with Swashbuckle. The composer uses its SwaggerGenOptions
+      and Microsoft.OpenApi's OpenApiInfo, and both come in through Umbraco.Cms.Api.Management at
+      the version Umbraco itself was built against. The 17 extension template references
+      Swashbuckle.AspNetCore directly, but this package depends on nothing outside Microsoft and
+      Umbraco, so the transitive reference is used instead.
     -->
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
   </ItemGroup>
 
   <ItemGroup>

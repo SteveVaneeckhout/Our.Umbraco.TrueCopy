@@ -39,10 +39,8 @@ namespace Our.Umbraco.TrueCopy.Controllers
         /// </summary>
         /// <remarks>
         ///     Note there is deliberately no <c>ProducesResponseType</c> for 401 or 403 on this - or any
-        ///     - action. Umbraco's <c>BackOfficeSecurityRequirementsTransformer</c> adds both to every
-        ///     operation, and declaring either again throws "An item with the same key has already been
-        ///     added" while the OpenAPI document is generated, which surfaces as a 500 on
-        ///     /umbraco/openapi/truecopy.json rather than anything that points at this file.
+        ///     - action. Umbraco 17's Swashbuckle filter adds the 401 itself; on Umbraco 18 declaring
+        ///     either breaks OpenAPI generation, and this action is kept the same on both branches.
         /// </remarks>
         [HttpPost("copy")]
         [ProducesResponseType<TrueCopyResultModel>(StatusCodes.Status200OK)]
@@ -56,7 +54,7 @@ namespace Our.Umbraco.TrueCopy.Controllers
             // is a content write, so the individual documents are authorized too - the same two checks,
             // against the same permissions, that core's own CopyDocumentController makes.
             //
-            // ActionLetter, not ActionAlias: in Umbraco 18 the two read backwards from their names.
+            // ActionLetter, not ActionAlias: in Umbraco 17 the two read backwards from their names.
             // ActionCopy.ActionLetter is "Umb.Document.Duplicate", the permission the user actually holds,
             // while ActionCopy.ActionAlias is the legacy "copy". Authorizing on the alias silently fails
             // every check, because no user is ever granted a permission by that name.

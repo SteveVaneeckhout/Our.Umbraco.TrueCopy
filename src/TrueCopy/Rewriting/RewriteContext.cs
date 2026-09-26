@@ -61,7 +61,7 @@ public sealed class RewriteContext
     /// </summary>
     /// <remarks>
     ///     Supplied by <c>TrueCopyService</c>, which has <c>IContentTypeService</c>. Null in unit tests,
-    ///     where every fixture writes the alias the way Umbraco 18 does.
+    ///     where every fixture writes the alias the way Umbraco 17 does.
     /// </remarks>
     public Func<Guid, string, string?>? NestedEditorAliasResolver { get; }
 

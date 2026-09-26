@@ -83,7 +83,7 @@ Stored value shapes, each confirmed against real rows in this repo's database ra
 | `Umbraco.RichText` | `{"markup":"…","blocks":{contentData,settingsData,expose,layout}}` |
 | `Umbraco.BlockList` / `BlockGrid` / `SingleBlock` | `{layout,contentData,settingsData,expose}` |
 
-Note that v18 still *persists* `unique` and `type` on Multi URL Picker entries (as nulls), so both the
+Note that v17 still *persists* `unique` and `type` on Multi URL Picker entries (as nulls), so both the
 `udi` form and the older `type`+`unique` pairing are handled.
 
 ### Everything works on the JSON tree, not on Umbraco's models
@@ -99,7 +99,7 @@ people's content.
 All three appear in real data and all three are handled, each rewritten back into the form it arrived
 in:
 
-- Umbraco 18: `<a href="/{localLink:<guid>}" type="document">`
+- Umbraco 17: `<a href="/{localLink:<guid>}" type="document">`
 - older: `{localLink:umb://document/<guid>}`
 - pre-v7: `{localLink:1234}` — resolved through the id half of the map
 
@@ -114,7 +114,7 @@ keys, not documents. Umbraco's copy re-keys those consistently across `layout`, 
 
 ### Blocks recurse by `editorAlias`
 
-Umbraco 18 persists `editorAlias` alongside each nested value, so each one says which editor it is and
+Umbraco 17 persists `editorAlias` alongside each nested value, so each one says which editor it is and
 nothing has to be guessed. Where it is missing — values written by an older version — the block's
 `contentTypeKey` is resolved through `IContentTypeService` instead, cached per operation. Guessing the
 editor from the value's shape is how a rewriter starts corrupting data, so there is no third fallback:
@@ -131,7 +131,7 @@ the state a document loaded through `IContentService.GetById` is in. The rewrite
 ## API
 
 `POST /umbraco/truecopy/api/v1/copy`, requiring Content section access. Browsable at
-`/umbraco/openapi` under the `truecopy` document.
+`/umbraco/swagger` under the `truecopy` document.
 
 ```jsonc
 { "sourceId": "<guid>", "targetParentId": "<guid|null>", "includeDescendants": true, "relateToOriginal": false }
@@ -141,15 +141,16 @@ Section access alone is not enough — copying is a content write — so the req
 the two specific documents, the same two permissions core's own `CopyDocumentController` checks:
 `Umb.Document.Duplicate` on the source and `Umb.Document.Create` on the target.
 
-**`ActionLetter`, not `ActionAlias`.** In Umbraco 18 those two fields read backwards from their names:
+**`ActionLetter`, not `ActionAlias`.** In Umbraco 17 (and 18) those two fields read backwards from their names:
 `ActionCopy.ActionLetter` is `"Umb.Document.Duplicate"`, the permission a user actually holds, while
 `ActionCopy.ActionAlias` is the legacy `"copy"`. Authorizing on the alias fails every check silently,
 because nobody is ever granted a permission by that name.
 
-**Never declare a 401 *or a 403* `ProducesResponseType`.** Umbraco's
-`BackOfficeSecurityRequirementsTransformer` adds **both** to every operation, and declaring either
-again throws `An item with the same key has already been added` while the document is generated —
-surfacing as a 500 on `/umbraco/openapi/truecopy.json` with nothing pointing at the controller.
+**The OpenAPI document comes from Swashbuckle on Umbraco 17**, served at
+`/umbraco/swagger/truecopy/swagger.json`. Operations are named HTTP method + action (`PostCopy`) so the
+generated client's `postCopy` is the same on both branches. On Umbraco 18 a declared 401 or 403
+`ProducesResponseType` breaks document generation; the controller declares neither, on either branch,
+so it stays the same code.
 
 ## The client
 

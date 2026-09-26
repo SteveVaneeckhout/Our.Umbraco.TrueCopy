@@ -5,7 +5,7 @@ once already; none of it is guesswork.
 
 ## What this is
 
-`Our.Umbraco.TrueCopy`: an Umbraco 18 backoffice package, a copy that also repoints internal links at the copies. It is published to NuGet and
+`Our.Umbraco.TrueCopy`: an Umbraco 17 LTS backoffice package, a copy that also repoints internal links at the copies. It is published to NuGet and
 listed on the Umbraco Marketplace, so the public surface and the README are part of the product.
 
 ```
@@ -34,6 +34,12 @@ from `main`, 17.x from `v17/main`), all under the one NuGet ID.
 - A fix that applies to both lines is **cherry-picked** across. Never merge the branches into each
   other: the port itself would come along with the fix.
 
+**This is the `v17/main` branch.** What differs from `main` is deliberately small: the version pins,
+the OpenAPI composer (Umbraco 17 still uses Swashbuckle - see *OpenAPI* below), the regenerated
+`Client/src/api`, the uSync folder name, and the docs. The rewriters, the service, the controller and
+the client source are the same code - only comments naming the Umbraco version differ - and every
+stored value shape they rely on was re-verified on 17.7.0 against real rows.
+
 Inside `src/TrueCopy/`:
 
 ```
@@ -59,7 +65,7 @@ Backoffice at **https://localhost:44366/umbraco**, admin `hello@example.com`, pa
 `https://testsite1.127.0.0.1.nip.io:44366/`, which is the host the single uSync domain binds to.
 Everything secret in this repository is deliberately public - it is a throwaway local harness.
 
-On first boot the site creates a SQLite database, installs unattended, and imports `src/Cms/uSync/v18`.
+On first boot the site creates a SQLite database, installs unattended, and imports `src/Cms/uSync/v17`.
 
 **A running site holds the package DLL open**, so stop it before `dotnet build`:
 `Get-Process -Name Cms | Stop-Process -Force`.
@@ -151,11 +157,24 @@ The `.resx` files in `src/TrueCopy/Resources` cover the one surface a browser ca
 
 ## OpenAPI
 
-**`[ProducesResponseType(401)]` - and `(403)` - break the OpenAPI document.** Umbraco's
-`BackOfficeSecurityRequirementsTransformer` adds **both** to every operation, so declaring either
-yourself throws "An item with the same key has already been added. Key: 401" when the document is
-generated. It surfaces as a 500 on `/umbraco/openapi/truecopy.json`, with nothing in the stack trace
-pointing at your controller.
+**Umbraco 17 generates OpenAPI with Swashbuckle**; Umbraco 18 replaced it with
+Microsoft.AspNetCore.OpenApi, which is why `TrueCopyApiComposer` is the one source file that really
+differs between the branches. The document is at `/umbraco/swagger/truecopy/swagger.json`
+(OpenAPI 3.0), not `/umbraco/openapi/truecopy.json`.
+
+- **Operation IDs are named HTTP method + action** (`PostCopy`) by `TrueCopyOperationIdHandler`.
+  hey-api derives the client's function names from them, and that scheme reproduces exactly the name
+  `main`'s generator gives (`postCopy`), so `Client/src` needs no changes between the branches. The 17
+  extension template's `{action}`-only handler would rename it.
+- **Swashbuckle is used transitively**, through `Umbraco.Cms.Api.Management`. The 17 template
+  references `Swashbuckle.AspNetCore` directly; this package does not, because of the
+  Microsoft-or-Umbraco dependency rule above.
+- Swashbuckle marks request bodies optional, and its security filter adds only a `401` - so the
+  regenerated client types `body?:` and lists no `403`, where `main`'s has `body:` and both. Harmless:
+  the controller still returns its 403 `ProblemDetails`, and the client surfaces errors generically.
+- On `main` the `401`/`403` duplicate-key trap is real (declaring either throws while the document
+  generates). The controller here keeps `main`'s code and declares neither, so fixes cherry-pick
+  cleanly; see that branch's AGENTS.md before adding such an attribute on either side.
 
 ## What matters in this package
 
@@ -169,7 +188,7 @@ for third parties and must stay true.
   touching.
 - **Rewriters work on the JSON tree, never on typed models.** `BlockPropertyValue.Value` is
   `object?`, so typed round-tripping silently drops unmodelled fields.
-- **Rich text has three link forms and a media trap.** v18 `<a href="/{localLink:<guid>}" type="document">`,
+- **Rich text has three link forms and a media trap.** v17 `<a href="/{localLink:<guid>}" type="document">`,
   the older `{localLink:umb://document/<guid>}`, and the pre-v7 `{localLink:1234}`. The match is
   anchored on the `<a>` tag so `type` can be read: a `type="media"` link must never be reported as a
   document link left pointing outside the copy, because that report is the feature.
@@ -182,7 +201,7 @@ for third parties and must stay true.
   resolved `PropertyType`, which a document from `IContentService.GetById` does not have. That is why
   there is no reference pre-filter.
 - **`IAction.ActionLetter` holds the permission, `ActionAlias` holds the legacy name** - the two read
-  backwards from their names in Umbraco 18. `ActionCopy.ActionLetter` is `"Umb.Document.Duplicate"`,
+  backwards from their names in Umbraco 17 (and 18). `ActionCopy.ActionLetter` is `"Umb.Document.Duplicate"`,
   which is what a user is actually granted. Authorizing a `ContentPermissionResource` on the alias
   fails every check silently.
 - **The Multi URL Picker's editor value uses UDI entity types, not `LinkType` names.** Posting
@@ -201,7 +220,7 @@ the original" report is non-empty), a self-link nested in a block, an external U
 `{localLink:…}`. To exercise everything: True Copy *United Kingdom* into *Europe* **with Include
 descendants on** - without it you copy one page and prove almost nothing.
 
-`src/Cms/uSync/v18` was re-exported from scratch, so it contains no delete tombstones and matches the
+`src/Cms/uSync/v17` was re-exported from scratch, so it contains no delete tombstones and matches the
 database exactly. A plain uSync Export **adds and updates files but never removes stale ones**, which
 is how a domain pointing at a long-deleted node survived in the original export - empty the folder
 first if you want a clean one.
@@ -219,6 +238,11 @@ Install `playwright` (the library only) into a scratch directory with
 ordinary selectors work against the backoffice. Log in at `#username-input` (type `text`, not
 `email`) and `#password-input`, submit `#umb-login-button`, and wait for the form explicitly -
 `isVisible()` does not wait and returns false before the page has rendered.
+
+To call the API from a logged-in Playwright page without an API user, `fetch` from the page with
+the header `Authorization: Bearer [redacted]` - literally that. The backoffice keeps its tokens in
+HttpOnly cookies (`__Host-umbAccessToken`) and sends that placeholder, which the server swaps for
+the cookie; a `fetch` without it gets a 401. Verified on 17.7.0.
 
 For server-side checks, get a token with the `.env` client credentials against
 `POST /umbraco/management/api/v1/security/back-office/token` (`grant_type=client_credentials`).

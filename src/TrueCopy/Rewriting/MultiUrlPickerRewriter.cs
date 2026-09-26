@@ -7,7 +7,7 @@ namespace Our.Umbraco.TrueCopy.Rewriting;
 ///     <c>Umbraco.MultiUrlPicker</c> - a JSON array of link objects.
 /// </summary>
 /// <remarks>
-///     Umbraco 18 persists <c>{ name, target, udi, url, queryString, culture }</c>; an internal link has
+///     Umbraco 17 persists <c>{ name, target, udi, url, queryString, culture }</c>; an internal link has
 ///     <c>udi</c>, an external one has <c>url</c> and is left alone. Older values can also carry
 ///     <c>type</c>/<c>unique</c>, which v18 no longer writes but still reads - working on the JSON tree
 ///     rather than a model means those survive a rewrite instead of being silently dropped.

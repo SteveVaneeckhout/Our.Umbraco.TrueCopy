@@ -9,7 +9,7 @@ namespace Our.Umbraco.TrueCopy.Rewriting;
 /// </summary>
 /// <remarks>
 ///     Internal links are <c>{localLink:...}</c> tokens inside an anchor's <c>href</c>. Three forms exist
-///     in real data and all three are handled: the Umbraco 18 bare GUID, the older
+///     in real data and all three are handled: the Umbraco 17 bare GUID, the older
 ///     <c>umb://document/&lt;guid&gt;</c> UDI, and the pre-v7 integer id. Each is rewritten back into the
 ///     form it arrived in.
 ///     <para>
@@ -32,7 +32,7 @@ public sealed partial class RichTextRewriter : ILinkRewriter
 
     public string? Rewrite(string value, RewriteContext context)
     {
-        // Umbraco 18 always stores the JSON envelope, but a value carried over from an older install can
+        // Umbraco 17 always stores the JSON envelope, but a value carried over from an older install can
         // still be bare HTML. Treat anything that is not the envelope as markup on its own.
         if (JsonRewriting.TryParse(value) is not JsonObject root)
         {

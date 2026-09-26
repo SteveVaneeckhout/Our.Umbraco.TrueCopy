@@ -113,7 +113,7 @@ public sealed class BlockEditorRewriter : ILinkRewriter
     }
 
     /// <summary>
-    ///     Umbraco 18 persists <c>editorAlias</c> alongside each nested value, so normally it says which
+    ///     Umbraco 17 persists <c>editorAlias</c> alongside each nested value, so normally it says which
     ///     editor it is. Where it is missing - values written by an older version - fall back to resolving
     ///     the block's content type, which is what <c>TrueCopyService</c> supplies the resolver for.
     /// </summary>

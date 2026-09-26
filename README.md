@@ -2,7 +2,7 @@
 
 [![NuGet](https://img.shields.io/nuget/v/Our.Umbraco.TrueCopy?logo=nuget)](https://www.nuget.org/packages/Our.Umbraco.TrueCopy)
 [![Downloads](https://img.shields.io/nuget/dt/Our.Umbraco.TrueCopy?logo=nuget)](https://www.nuget.org/packages/Our.Umbraco.TrueCopy)
-[![Umbraco 18](https://img.shields.io/badge/Umbraco-18-3544B1?logo=umbraco)](https://umbraco.com)
+[![Umbraco 17 LTS](https://img.shields.io/badge/Umbraco-17%20LTS-3544B1?logo=umbraco)](https://umbraco.com)
 [![MIT](https://img.shields.io/badge/license-MIT-green)](https://github.com/SteveVaneeckhout/Our.Umbraco.TrueCopy/blob/main/LICENSE)
 
 **Copy a section of your site and have the links come with it.**
@@ -29,27 +29,22 @@ it was, and keeps doing exactly what it did.*
 
 ## Requirements
 
-- Umbraco **18.x** (this package is deliberately pinned to `[18.2.0,19.0.0)`)
+- Umbraco **17.x LTS** (this package is deliberately pinned to `[17.7.0,18.0.0)`)
 - .NET 10
 
 ## Versions
 
-The package major follows the Umbraco major, so the version tells you which one you need.
+The package major follows the Umbraco major, so the version tells you which one you need. This is
+the **17.x line**, for the Umbraco 17 LTS.
 
 | Umbraco | Package | Branch |
 | --- | --- | --- |
 | 18 | 18.x | [`main`](https://github.com/SteveVaneeckhout/Our.Umbraco.TrueCopy/tree/main) |
 | 17 LTS | 17.x | [`v17/main`](https://github.com/SteveVaneeckhout/Our.Umbraco.TrueCopy/tree/v17/main) |
 
-1.0.0 was the first Umbraco 18 release, before this scheme; 18.0.0 is the same package.
-
 ## Install
 
-```bash
-dotnet add package Our.Umbraco.TrueCopy
-```
-
-On Umbraco 17, ask for the 17.x line explicitly - a plain install picks the newest version, which
+Ask for the 17.x line explicitly. A plain `dotnet add package` picks the newest version, which
 targets Umbraco 18:
 
 ```bash
@@ -125,7 +120,7 @@ Register it from your own composer:
 builder.WithCollectionBuilder<LinkRewriterCollectionBuilder>().Append<MyPickerRewriter>();
 ```
 
-See **[docs/extending.md](https://github.com/SteveVaneeckhout/Our.Umbraco.TrueCopy/blob/main/docs/extending.md)** for the full contract, including why `Rewrite` must
+See **[docs/extending.md](https://github.com/SteveVaneeckhout/Our.Umbraco.TrueCopy/blob/v17/main/docs/extending.md)** for the full contract, including why `Rewrite` must
 return `null` rather than the input when nothing changed, how to recurse into nested blocks, and how
 to override a built-in rewriter.
 
@@ -140,10 +135,10 @@ to override a built-in rewriter.
 
 ## Documentation
 
-- [Development setup](https://github.com/SteveVaneeckhout/Our.Umbraco.TrueCopy/blob/main/docs/development.md) — clone, run, and work on the package
-- [How it works](https://github.com/SteveVaneeckhout/Our.Umbraco.TrueCopy/blob/main/docs/architecture.md) — the design, and the stored shape of every editor it touches
-- [Writing your own rewriter](https://github.com/SteveVaneeckhout/Our.Umbraco.TrueCopy/blob/main/docs/extending.md)
-- [Changelog](https://github.com/SteveVaneeckhout/Our.Umbraco.TrueCopy/blob/main/CHANGELOG.md)
+- [Development setup](https://github.com/SteveVaneeckhout/Our.Umbraco.TrueCopy/blob/v17/main/docs/development.md) — clone, run, and work on the package
+- [How it works](https://github.com/SteveVaneeckhout/Our.Umbraco.TrueCopy/blob/v17/main/docs/architecture.md) — the design, and the stored shape of every editor it touches
+- [Writing your own rewriter](https://github.com/SteveVaneeckhout/Our.Umbraco.TrueCopy/blob/v17/main/docs/extending.md)
+- [Changelog](https://github.com/SteveVaneeckhout/Our.Umbraco.TrueCopy/blob/v17/main/CHANGELOG.md)
 
 ## License
 
